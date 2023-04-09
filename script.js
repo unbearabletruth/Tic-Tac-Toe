@@ -1,3 +1,5 @@
+const squares = document.querySelectorAll(".square");
+
 const Players = (name, weapon) => {
     return {name, weapon};
 }
@@ -5,27 +7,15 @@ const Players = (name, weapon) => {
 const Player1 = Players("Plato", "x");
 const Player2 = Players("Darwin", "o");
 
-const gameBoardModule = (() => {
-    let player = Player1
+const gameBoardModule = (() => {    
     gameBoard = ["", "", "", "", "", "", "", "", ""];
 
-    const fillArray = (e) => {
-        if (player === Player1){
-            gameBoard.splice(e.target.id, 1, player.weapon);
-            player = Player2;
-        } else if (player === Player2) {
-            gameBoard.splice(e.target.id, 1, player.weapon);
-            player = Player1
-        }
-    }
-    return {gameBoard, fillArray};
+    return {gameBoard};
 })();
-
-
 
 const displayController = (() => {
     const {gameBoard} = gameBoardModule;
-    const {fillArray} = gameBoardModule;
+    let player = Player1
     
     const render = () => {
     for (let i = 0; i < gameBoard.length; i++) {
@@ -33,15 +23,33 @@ const displayController = (() => {
         current.textContent = gameBoard[i];
      }
     };
-    
+
+    const fillArray = (square) => {
+        if (square.textContent != "x" && square.textContent != "o"){
+            if (player === Player1){
+                gameBoard.splice(square.id, 1, player.weapon);
+                console.log(gameBoard);
+                player = Player2;
+            } else if (player === Player2) {
+                gameBoard.splice(square.id, 1, player.weapon);
+                player = Player1
+            }
+            render();
+        }
+        
+    };
+
     const fillBoard = () => {
         squares.forEach(square => {
-            square.addEventListener("click", fillArray)
-            console.log("her")
+            square.addEventListener("click", () => {
+                fillArray(square);
+            })
         });
         };
+    
+    
     fillBoard();
-    render();
+
     
     return {render};
 })();
