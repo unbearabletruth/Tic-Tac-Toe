@@ -1,0 +1,21 @@
+body {
+    height: 100vh;
+}
+
+.board {
+    display: grid;
+    grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+    width: 600px;
+    height: 600px;
+}
+
+.square {
+    display: flex;
+    width: 200px;
+    height: 200px;
+    border: 1px solid;
+    justify-content: center;
+    align-items: center;
+    font-size: 50px;
+    font-weight: bold;
+}
