@@ -1,5 +1,6 @@
 const squares = document.querySelectorAll(".square");
 const winnertext = document.querySelector("#title");
+const restart = document.querySelector("#restart");
 
 const Players = (name, weapon) => {
     return {name, weapon};
@@ -41,16 +42,24 @@ const gameBoardModule = (() => {
             if (gameBoard[winCondition[0]] === gameBoard[winCondition[1]] &&
                 gameBoard[winCondition[1]] === gameBoard[winCondition[2]] &&
                 gameBoard[winCondition[0]] != ''){
-                
-                if (gameBoard[winCondition[0]] === `${Player1.weapon}`){
-                    winnertext.textContent = `we have a winner: ${Player1.name}`;
-            }   else {
-                    winnertext.textContent = `we have a winner: ${Player2.name}`;
+                const winnerWeapon = gameBoard[winCondition[0]];
+                gameOver(winnerWeapon);
             }
-            }
-        }); 
+        });
     };
 
+    const gameOver = (winner) => {
+        if (winner === `${Player1.weapon}`){
+            winnertext.textContent = `we have a winner: ${Player1.name}`;
+    } 
+        else if (winner === `${Player2.weapon}`){
+            winnertext.textContent = `we have a winner: ${Player2.name}`;
+    } 
+        else if (winner != `${Player1.weapon}` && winner != `${Player2.weapon}` && !gameBoard.includes("")){
+            winnertext.textContent = "we have a draw!"
+        }
+    }   
+    
     return {gameBoard, fillArray, checkWin};
 })();
 
@@ -74,7 +83,15 @@ const displayController = (() => {
             })
         });
         };
-    
+
+    const restartGame = () => {
+        restart.addEventListener("click", () => {
+            gameBoard = ["", "", "", "", "", "", "", "", ""];
+            winnertext.textContent = "Let's play again!"
+            render();
+        })
+    }
+    restartGame();
     fillBoard();
     return {render, fillBoard};
 })();
