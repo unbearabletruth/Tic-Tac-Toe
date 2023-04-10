@@ -1,13 +1,17 @@
 const squares = document.querySelectorAll(".square");
 const winnertext = document.querySelector("#title");
 const restart = document.querySelector("#restart");
+const start = document.querySelector("#start");
+
 
 const Players = (name, weapon) => {
     return {name, weapon};
 }
-
 const Player1 = Players("Plato", "x");
 const Player2 = Players("Darwin", "o");
+
+
+console.log(Player1)
 
 const gameBoardModule = (() => {    
     gameBoard = ["", "", "", "", "", "", "", "", ""];
@@ -63,9 +67,28 @@ const gameBoardModule = (() => {
     return {gameBoard, fillArray, checkWin};
 })();
 
+const namePlayer1 = document.querySelector("#firstplayer").value;
+    console.log(namePlayer1)
 
 const displayController = (() => {
     const board = Object.create(gameBoardModule);
+    
+    const setNames = () => {
+        if (document.querySelector("#firstplayer").value != ""){
+            Player1.name = document.querySelector("#firstplayer").value;
+        }
+        if (document.querySelector("#secondplayer").value != ""){
+            Player2.name = document.querySelector("#secondplayer").value;
+        }
+    };
+
+    const startGame = () => {
+        start.addEventListener("click", () => {
+            setNames();
+            fillBoard();
+            
+    });
+    };
 
     const render = () => {
     for (let i = 0; i < gameBoard.length; i++) {
@@ -88,11 +111,12 @@ const displayController = (() => {
         restart.addEventListener("click", () => {
             gameBoard = ["", "", "", "", "", "", "", "", ""];
             winnertext.textContent = "Let's play again!"
+            setNames();
             render();
         })
     }
     restartGame();
-    fillBoard();
+    startGame();
     return {render, fillBoard};
 })();
 
