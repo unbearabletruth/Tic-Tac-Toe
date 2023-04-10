@@ -26,14 +26,29 @@ const gameBoardModule = (() => {
     };
 
     const checkWin = () => {
-        if (gameBoard[0] === gameBoard[1] && gameBoard[0] === gameBoard[2] && gameBoard[0] != ""){
-            console.log(gameBoard[0])
-            if (gameBoard[0] === `${Player1.weapon}`){
-                winnertext.textContent = `we have a winner: ${Player1.name}`;
-        }else {
-            winnertext.textContent = `we have a winner: ${Player2.name}`
-        }
-    }
+        const winConditions = [
+            [0, 1, 2],
+            [3, 4, 5],
+            [6, 7, 8],
+            [0, 3, 6],
+            [1, 4, 7],
+            [2, 5, 8],
+            [0, 4, 8],
+            [2, 4, 6],
+        ];
+
+        winConditions.forEach(winCondition => {
+            if (gameBoard[winCondition[0]] === gameBoard[winCondition[1]] &&
+                gameBoard[winCondition[1]] === gameBoard[winCondition[2]] &&
+                gameBoard[winCondition[0]] != ''){
+                
+                if (gameBoard[winCondition[0]] === `${Player1.weapon}`){
+                    winnertext.textContent = `we have a winner: ${Player1.name}`;
+            }   else {
+                    winnertext.textContent = `we have a winner: ${Player2.name}`;
+            }
+            }
+        }); 
     };
 
     return {gameBoard, fillArray, checkWin};
