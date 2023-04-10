@@ -4,6 +4,7 @@ const restart = document.querySelector("#restart");
 const start = document.querySelector("#start");
 
 
+
 const Players = (name, weapon) => {
     return {name, weapon};
 }
@@ -54,13 +55,13 @@ const gameBoardModule = (() => {
 
     const gameOver = (winner) => {
         if (winner === `${Player1.weapon}`){
-            winnertext.textContent = `we have a winner: ${Player1.name}`;
+            winnertext.textContent = `We have a winner! ${Player1.name}!`;
     } 
         else if (winner === `${Player2.weapon}`){
-            winnertext.textContent = `we have a winner: ${Player2.name}`;
+            winnertext.textContent = `We have a winner! ${Player2.name}!`;
     } 
         else if (winner != `${Player1.weapon}` && winner != `${Player2.weapon}` && !gameBoard.includes("")){
-            winnertext.textContent = "we have a draw!"
+            winnertext.textContent = "We have a draw!"
         }
     }   
     
@@ -72,6 +73,8 @@ const namePlayer1 = document.querySelector("#firstplayer").value;
 
 const displayController = (() => {
     const board = Object.create(gameBoardModule);
+
+    
     
     const setNames = () => {
         if (document.querySelector("#firstplayer").value != ""){
@@ -93,6 +96,9 @@ const displayController = (() => {
     const render = () => {
     for (let i = 0; i < gameBoard.length; i++) {
         const current = document.getElementById(`${i}`);
+        if (gameBoard[i] === "x"){
+            current.style.color = "#0ea5e9";
+        }
         current.textContent = gameBoard[i];
      }
     };
@@ -111,14 +117,21 @@ const displayController = (() => {
         restart.addEventListener("click", () => {
             gameBoard = ["", "", "", "", "", "", "", "", ""];
             winnertext.textContent = "Let's play again!"
+            squares.forEach(square => {
+                square.addEventListener("click", () => {
+                    square.style.color = "#404040";
+                })
+            });
             setNames();
             render();
         })
-    }
+    };
+
     restartGame();
     startGame();
     return {render, fillBoard};
 })();
 
 
-
+//after game is over stop event listener which populates
+//draw doesn't work properly
