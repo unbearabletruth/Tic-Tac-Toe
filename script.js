@@ -24,10 +24,12 @@ const gameBoardModule = (() => {
                 gameBoard.splice(square.id, 1, player.weapon);
                 console.log(gameBoard);
                 player = Player2;
+                checkWin();
             } else if (player === Player2) {
                 gameBoard.splice(square.id, 1, player.weapon);
-                player = Player1
-            }
+                player = Player1;
+                checkWin();
+            }   
         }  
     };
 
@@ -96,9 +98,9 @@ const displayController = (() => {
     const render = () => {
     for (let i = 0; i < gameBoard.length; i++) {
         const current = document.getElementById(`${i}`);
-        if (gameBoard[i] === "x"){
+        /*if (gameBoard[i] === "x"){
             current.style.color = "#0ea5e9";
-        }
+        }*/
         current.textContent = gameBoard[i];
      }
     };
@@ -107,7 +109,6 @@ const displayController = (() => {
         squares.forEach(square => {
             square.addEventListener("click", () => {
                 board.fillArray(square);
-                board.checkWin();
                 render();
             })
         });
@@ -117,11 +118,11 @@ const displayController = (() => {
         restart.addEventListener("click", () => {
             gameBoard = ["", "", "", "", "", "", "", "", ""];
             winnertext.textContent = "Let's play again!"
-            squares.forEach(square => {
+            /*squares.forEach(square => {
                 square.addEventListener("click", () => {
                     square.style.color = "#404040";
                 })
-            });
+            });*/
             setNames();
             render();
         })
