@@ -4,7 +4,6 @@ const restart = document.querySelector("#restart");
 const start = document.querySelector("#start");
 
 
-
 const Players = (name, weapon) => {
     return {name, weapon};
 }
@@ -55,9 +54,9 @@ const gameBoardModule = (() => {
                 removefillBoard();
                 return gameOver(winnerWeapon);
             }
-            else if (!gameBoard.includes("")){
-                gameOver("draw!")
-            }
+        }
+        if (!gameBoard.includes("")){
+            return gameOver("draw!"); 
         }
     };
 
@@ -76,9 +75,9 @@ const gameBoardModule = (() => {
     const render = () => {
         for (let i = 0; i < gameBoard.length; i++) {
             const current = document.getElementById(`${i}`);
-            /*if (gameBoard[i] === "x"){
+            if (gameBoard[i] === "x"){
                 current.style.color = "#0ea5e9";
-            }*/
+            }
             current.textContent = gameBoard[i];
          }
         };
@@ -127,11 +126,11 @@ const displayController = (() => {
         restart.addEventListener("click", () => {
             gameBoard = ["", "", "", "", "", "", "", "", ""];
             winnertext.textContent = "Let's play again!"
-            /*squares.forEach(square => {
+            squares.forEach(square => {
                 square.addEventListener("click", () => {
                     square.style.color = "#404040";
                 })
-            });*/
+            });
             board.fillBoard();
             setNames();
             board.render();
