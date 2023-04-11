@@ -18,17 +18,19 @@ const gameBoardModule = (() => {
     gameBoard = ["", "", "", "", "", "", "", "", ""];
     let player = Player1
 
-    const fillArray = (square) => {
-        if (square.textContent != "x" && square.textContent != "o"){
+    const fillArray = (e) => {
+        if (e.target.textContent != "x" && e.target.textContent != "o"){
             if (player === Player1){
-                gameBoard.splice(square.id, 1, player.weapon);
+                gameBoard.splice(e.target.id, 1, player.weapon);
                 console.log(gameBoard);
                 player = Player2;
                 checkWin();
+                render();
             } else if (player === Player2) {
-                gameBoard.splice(square.id, 1, player.weapon);
+                gameBoard.splice(e.target.id, 1, player.weapon);
                 player = Player1;
                 checkWin();
+                render();
             }   
         }  
     };
@@ -51,6 +53,7 @@ const gameBoardModule = (() => {
                 gameBoard[winCondition[0]] != ''){
                 const winnerWeapon = gameBoard[winCondition[0]];
                 gameOver(winnerWeapon);
+                removefillBoard();
             }
         });
     };
@@ -66,18 +69,37 @@ const gameBoardModule = (() => {
             winnertext.textContent = "We have a draw!"
         }
     }   
+
+    const render = () => {
+        for (let i = 0; i < gameBoard.length; i++) {
+            const current = document.getElementById(`${i}`);
+            /*if (gameBoard[i] === "x"){
+                current.style.color = "#0ea5e9";
+            }*/
+            current.textContent = gameBoard[i];
+         }
+        };
+
+    const fillBoard = () => {
+        squares.forEach(square => {
+            square.addEventListener("click", fillArray);
+        });
+        };
+        
+    const removefillBoard = () => {
+            squares.forEach(square => {
+                square.removeEventListener("click", fillArray);
+            });
+            };
+
     
-    return {gameBoard, fillArray, checkWin};
+    return {gameBoard, fillArray, checkWin, render, fillBoard};
 })();
 
-const namePlayer1 = document.querySelector("#firstplayer").value;
-    console.log(namePlayer1)
 
 const displayController = (() => {
     const board = Object.create(gameBoardModule);
 
-    
-    
     const setNames = () => {
         if (document.querySelector("#firstplayer").value != ""){
             Player1.name = document.querySelector("#firstplayer").value;
@@ -90,29 +112,13 @@ const displayController = (() => {
     const startGame = () => {
         start.addEventListener("click", () => {
             setNames();
-            fillBoard();
+            board.fillBoard();
             
     });
     };
 
-    const render = () => {
-    for (let i = 0; i < gameBoard.length; i++) {
-        const current = document.getElementById(`${i}`);
-        /*if (gameBoard[i] === "x"){
-            current.style.color = "#0ea5e9";
-        }*/
-        current.textContent = gameBoard[i];
-     }
-    };
-
-    const fillBoard = () => {
-        squares.forEach(square => {
-            square.addEventListener("click", () => {
-                board.fillArray(square);
-                render();
-            })
-        });
-        };
+  
+        
 
     const restartGame = () => {
         restart.addEventListener("click", () => {
@@ -123,14 +129,15 @@ const displayController = (() => {
                     square.style.color = "#404040";
                 })
             });*/
+            board.fillBoard();
             setNames();
-            render();
+            board.render();
         })
     };
 
     restartGame();
     startGame();
-    return {render, fillBoard};
+    return {};
 })();
 
 
