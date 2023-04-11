@@ -6,16 +6,14 @@ const start = document.querySelector("#start");
 
 const Players = (name, weapon) => {
     return {name, weapon};
-}
+};
+
 const Player1 = Players("Plato", "x");
 const Player2 = Players("Darwin", "o");
 
-
-console.log(Player1)
-
 const gameBoardModule = (() => {    
     gameBoard = ["", "", "", "", "", "", "", "", ""];
-    let player = Player1
+    let player = Player1;
 
     const fillArray = (e) => {
         if (e.target.textContent != "x" && e.target.textContent != "o"){
@@ -70,7 +68,7 @@ const gameBoardModule = (() => {
         else {
             winnertext.textContent = "We have a draw!"
         }
-    }   
+    };   
 
     const render = () => {
         for (let i = 0; i < gameBoard.length; i++) {
@@ -94,8 +92,7 @@ const gameBoardModule = (() => {
             });
             };
 
-    
-    return {gameBoard, fillArray, checkWin, render, fillBoard};
+    return {gameBoard, fillArray, checkWin, render, fillBoard, removefillBoard};
 })();
 
 
@@ -119,9 +116,6 @@ const displayController = (() => {
     });
     };
 
-  
-        
-
     const restartGame = () => {
         restart.addEventListener("click", () => {
             gameBoard = ["", "", "", "", "", "", "", "", ""];
@@ -131,6 +125,7 @@ const displayController = (() => {
                     square.style.color = "#404040";
                 })
             });
+            board.removefillBoard();
             board.fillBoard();
             setNames();
             board.render();
@@ -142,4 +137,4 @@ const displayController = (() => {
     return {};
 })();
 
-//draw doesn't work properly
+//if restart before win then issue with color
