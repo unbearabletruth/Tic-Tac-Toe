@@ -1,35 +1,28 @@
 const squares = document.querySelectorAll(".square");
 const winnertext = document.querySelector("#title");
-const restart = document.querySelector("#restart");
-const start = document.querySelector("#start");
-
 
 const Players = (name, weapon) => {
     return {name, weapon};
 };
-
 const Player1 = Players("Plato", "x");
 const Player2 = Players("Darwin", "o");
 
 const gameBoardModule = (() => {    
     gameBoard = ["", "", "", "", "", "", "", "", ""];
-    let player = Player1;
+    let player = Math.random() < 0.5 ? Player1 : Player2;
 
     const fillArray = (e) => {
         if (e.target.textContent != "x" && e.target.textContent != "o"){
             if (player === Player1){
                 gameBoard.splice(e.target.id, 1, player.weapon);
-                console.log(gameBoard);
                 player = Player2;
-                checkWin();
-                render();
             } else if (player === Player2) {
                 gameBoard.splice(e.target.id, 1, player.weapon);
-                player = Player1;
-                checkWin();
-                render();
+                player = Player1;  
             }   
-        }  
+        }
+        checkWin();
+        render(); 
     };
 
     const checkWin = () => {
@@ -97,7 +90,7 @@ const gameBoardModule = (() => {
 
 
 const displayController = (() => {
-    const board = Object.create(gameBoardModule);
+    const board = gameBoardModule;
 
     const setNames = () => {
         if (document.querySelector("#firstplayer").value != ""){
@@ -108,23 +101,28 @@ const displayController = (() => {
         }
     };
 
+    const resetColors = () => {
+        squares.forEach(square => {
+            square.addEventListener("click", () => {
+                square.style.color = "#404040";
+            })
+        });
+    };
+
     const startGame = () => {
+        const start = document.querySelector("#start");
         start.addEventListener("click", () => {
             setNames();
-            board.fillBoard();
-            
+            board.fillBoard();       
     });
     };
 
     const restartGame = () => {
+        const restart = document.querySelector("#restart");
         restart.addEventListener("click", () => {
             gameBoard = ["", "", "", "", "", "", "", "", ""];
-            winnertext.textContent = "Let's play again!"
-            squares.forEach(square => {
-                square.addEventListener("click", () => {
-                    square.style.color = "#404040";
-                })
-            });
+            winnertext.textContent = "Let's play again!";
+            resetColors();
             board.removefillBoard();
             board.fillBoard();
             setNames();
@@ -137,4 +135,4 @@ const displayController = (() => {
     return {};
 })();
 
-//if restart before win then issue with color
+
