@@ -47,15 +47,18 @@ const gameBoardModule = (() => {
             [2, 4, 6],
         ];
 
-        winConditions.forEach(winCondition => {
+        for (winCondition of winConditions){
             if (gameBoard[winCondition[0]] === gameBoard[winCondition[1]] &&
                 gameBoard[winCondition[1]] === gameBoard[winCondition[2]] &&
                 gameBoard[winCondition[0]] != ''){
                 const winnerWeapon = gameBoard[winCondition[0]];
-                gameOver(winnerWeapon);
                 removefillBoard();
+                return gameOver(winnerWeapon);
             }
-        });
+            else if (!gameBoard.includes("")){
+                gameOver("draw!")
+            }
+        }
     };
 
     const gameOver = (winner) => {
@@ -65,7 +68,7 @@ const gameBoardModule = (() => {
         else if (winner === `${Player2.weapon}`){
             winnertext.textContent = `We have a winner! ${Player2.name}!`;
     } 
-        else if (winner != `${Player1.weapon}` && winner != `${Player2.weapon}` && !gameBoard.includes("")){
+        else {
             winnertext.textContent = "We have a draw!"
         }
     }   
@@ -140,6 +143,4 @@ const displayController = (() => {
     return {};
 })();
 
-
-//after game is over stop event listener which populates
 //draw doesn't work properly
